@@ -3,6 +3,7 @@ package wild.tanvasthing;
 /**
  * Created by GbearTheGenius on 11/19/16.
  */
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,7 +19,15 @@ public class ImageHelper {
 
     Bitmap final_image;
    // Context context;
-
+   String[] tags = new String[]{
+           "wood",
+           "brick",
+           "glass",
+           "metal",
+           "water",
+           "plastic",
+           "cloth"
+   };
     ImageHelper(){
       //  context = con;
 
@@ -77,6 +86,16 @@ public class ImageHelper {
     Bitmap ConverttoPNG(String path)
     {
         return BitmapFactory.decodeFile(path);
+    }
+    public Bitmap Engrave_Image(Bitmap src){
+
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+        convMatrix.setAll(0);
+        convMatrix.Matrix[0][0] = -2;
+        convMatrix.Matrix[1][1] = 2;
+        convMatrix.Factor = 1;
+        convMatrix.Offset = 95;
+        return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
     }
 
     String Select_Image(){

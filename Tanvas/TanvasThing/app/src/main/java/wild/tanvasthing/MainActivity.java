@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
@@ -57,11 +58,19 @@ public class MainActivity extends AppCompatActivity {
         textTargetUri = (TextView)findViewById(R.id.vieww);
         targetImage = (ImageView) findViewById(R.id.view);
 
-//        Bitmap temp = BitmapFactory.decodeResource(getResources(),
-//                R.drawable.overlay);
-//        ImageHelper imm = new ImageHelper();
-//        temp = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
-//        targetImage.setImageBitmap(temp);
+        long mil = SystemClock.currentThreadTimeMillis();
+        Bitmap temp = BitmapFactory.decodeResource(getResources(),
+                R.drawable.overlay);
+        ImageHelper imm = new ImageHelper();
+        Bitmap temp1 = imm.Engrave_Image(temp);
+        targetImage.setImageBitmap(temp1);
+        Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+
+        mil = SystemClock.currentThreadTimeMillis();
+        temp = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
+        targetImage.setImageBitmap(temp);
+        Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+
 
 
         //set up Button
@@ -75,13 +84,19 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                //
+
                 Log.d("This: ", "Returned to the thing");
                 progressDialog  = new ProgressDialog(con);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
                 progressDialog.setProgress(0);
                 progressDialog.show();
+                try {
+                    mHapticView.deactivate();
+                } catch (HapticServiceAdapterException e) {
+                    e.printStackTrace();
+                }
+
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0);
             }
         });
@@ -93,6 +108,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+
+                progressDialog  = new ProgressDialog(con);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
+                progressDialog.setProgress(0);
+                progressDialog.show();
+                try {
+                    mHapticView.deactivate();
+                } catch (HapticServiceAdapterException e) {
+                    e.printStackTrace();
+                }
 
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
             }
@@ -121,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
             // Retrieve texture data from the bitmap
             Bitmap hapticBitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.texture);
-
-
 
             byte[] textureData =
                     HapticTexture.createTextureDataFromBitmap(hapticBitmap);
