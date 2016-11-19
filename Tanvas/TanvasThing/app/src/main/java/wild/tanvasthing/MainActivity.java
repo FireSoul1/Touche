@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URI;
 
 import co.tanvas.haptics.service.app.*;
@@ -62,14 +65,18 @@ public class MainActivity extends AppCompatActivity {
         Bitmap temp = BitmapFactory.decodeResource(getResources(),
                 R.drawable.overlay);
         ImageHelper imm = new ImageHelper();
-        Bitmap temp1 = imm.Engrave_Image(temp);
-        targetImage.setImageBitmap(temp1);
+     //   Bitmap temp1 = imm.Engrave_Image(temp);
+       // targetImage.setImageBitmap(temp1);
         Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
 
         mil = SystemClock.currentThreadTimeMillis();
         temp = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
         targetImage.setImageBitmap(temp);
         Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+
+        //create new files
+        Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.chair1);
+
 
 
 
@@ -278,6 +285,28 @@ public class MainActivity extends AppCompatActivity {
         }
         updates(targetUri, p);
         progressDialog.dismiss();
+        try {
+            mHapticView.activate();
+        } catch (HapticServiceAdapterException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createNewFile(Bitmap map, int num, String type) {
+        File dir= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        Bitmap b= map;
+
+        String fil = "file"+type+"0"+num+".png";
+        File file = new File(dir, fil);
+        FileOutputStream fOut;
+        try {
+            fOut = new FileOutputStream(file);
+            b.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            b.recycle();
+
+        } catch (Exception e) {}
 
     }
 
