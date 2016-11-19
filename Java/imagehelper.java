@@ -61,7 +61,7 @@ public class imagehelper {
     {
         return BitmapFactory.decodeFile(path);
     }
-    
+
     Bitmap Engrave_Image(Bitmap src){
 
             ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
@@ -77,6 +77,68 @@ public class imagehelper {
         return "PATH/";
     }
 
-}
+    Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
+        Bitmap input = Bitmap.createBitmap(src);
+        int x = 0,
+                    y = 0;
+        int pix;
+        float[][] hsv = new float[input.getHeight()*input.getWidth()][3];
+
+        for( x = 0; x < input.getWidth(); x++ ) {
+            for( y = 0; y < input.getHeight(); y++ ) {
+                pix = input.getPixel(x, y);
+                Color.colorToHSV(pix,hsv[input.getWidth()*y + x]);
+            }
+        }
+            // Convert into HSV
+
+
+            // Euclidean distance squared threshold for deciding which pixels are members of the selected set
+            float maxDist2 = 0.4f*0.4f;
+
+            // Adjust the relative importance of Hue and Saturation.
+            // Hue has a range of 0 to 2*PI and Saturation from 0 to 1.
+            float adjustUnits = (float)(Math.PI/2.0);
+
+            // step through each pixel and mark how close it is to the selected color
+            Bitmap output = Bitmap.createBitmap(input.getWidth(),input.getHeight(),input.getConfig());
+
+
+            for( y = 0; y < input.getHeight(); y++ ) {
+                for( x = 0; x < input.getWidth(); x++ ) {
+
+                    // Hue is an angle in radians, so simple subtraction doesn't work
+                    float new_hue = (float)(((hsv[input.getWidth() * y + x][0] * (Math.PI) / 180.0F)));
+                    float dh = (float)dist(new_hue,hue);
+                    float ds = (hsv[input.getWidth() * y + x][1]-saturation)*adjustUnits;
+
+                    // this distance measure is a bit naive, but good enough for to demonstrate the concept
+                    float dist2 = dh*dh + ds*ds;
+                    if( dist2 <= maxDist2 ) {
+                        output.setPixel(x,y,input.getPixel(x,y));
+                    }
+                }
+            }
+            return output;
+
+        }
+    public static double minus( float angA, float angB ) {
+        float diff = angA - angB;
+
+        if( diff > Math.PI ) {
+            return (2 * Math.PI) - diff;
+        } else if( diff < -Math.PI )
+            return -(Math.PI*2) - diff;
+
+        return diff;
+    }
+
+    public static double dist( float angA, float angB ) {
+        return Math.abs(minus(angA,angB));
+    }
+
+    }
+
+
 
 
