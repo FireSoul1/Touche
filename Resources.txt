@@ -1,3 +1,3 @@
 https://xjaphx.wordpress.com/learning/tutorials/  <- A list of android image processing tutorials
 
-https://developer.clarifai.com/guide/#requests-and-responses <- Clarifai API documentation
+https://preview.clarifai.com/#/ <- Clarifai API documentation
