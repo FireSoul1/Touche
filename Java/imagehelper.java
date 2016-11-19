@@ -1,4 +1,4 @@
-/**
+package tanvas.purdue.tanvasproject; /**
  * Created by Blake Wilson on 11/19/2016.
  */
 import android.graphics.Bitmap;
@@ -8,7 +8,15 @@ import android.graphics.Color;
 public class imagehelper {
 
     Bitmap final_image;
-
+    String[] tags = new String[]{
+            "wood",
+            "brick",
+            "glass",
+            "metal",
+            "water",
+            "plastic",
+            "cloth"
+    };
     void imagehelper(){
 
     }
@@ -34,7 +42,7 @@ public class imagehelper {
 
 
     }
-    Bitmap Grayscale(Bitmap pre_image)
+    public Bitmap Grayscale(Bitmap pre_image)
     {
         int width = pre_image.getWidth(),
                 height = pre_image.getHeight(),
@@ -57,12 +65,12 @@ public class imagehelper {
     }
         return OutBitMap;
     }
-    Bitmap ConverttoPNG(String path)
+    public Bitmap ConverttoPNG(String path)
     {
         return BitmapFactory.decodeFile(path);
     }
 
-    Bitmap Engrave_Image(Bitmap src){
+    public Bitmap Engrave_Image(Bitmap src){
 
             ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
             convMatrix.setAll(0);
@@ -77,7 +85,7 @@ public class imagehelper {
         return "PATH/";
     }
 
-    Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
+    public Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
         Bitmap input = Bitmap.createBitmap(src);
         int x = 0,
                     y = 0;
@@ -90,10 +98,7 @@ public class imagehelper {
                 Color.colorToHSV(pix,hsv[input.getWidth()*y + x]);
             }
         }
-            // Convert into HSV
 
-
-            // Euclidean distance squared threshold for deciding which pixels are members of the selected set
             float maxDist2 = 0.4f*0.4f;
 
             // Adjust the relative importance of Hue and Saturation.
