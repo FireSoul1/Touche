@@ -8,9 +8,11 @@ import android.graphics.Color;
 public class imagehelper {
 
     Bitmap final_image;
+
     void imagehelper(){
 
     }
+
     String Master_Process(){
         String path = Select_Image();                       //path to image
 
@@ -48,7 +50,6 @@ public class imagehelper {
                 r = Color.red(pix);
                 g = Color.green(pix);
                 b = Color.blue(pix);
-
                 r = (int)(0.299 * r + 0.587 * g + 0.114 * b);
                 g = b = r;
                 OutBitMap.setPixel(i,j,Color.argb(Color.alpha(pix), r, g, b));
@@ -60,8 +61,22 @@ public class imagehelper {
     {
         return BitmapFactory.decodeFile(path);
     }
+    
+    Bitmap Engrave_Image(Bitmap src){
+
+            ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+            convMatrix.setAll(0);
+            convMatrix.Matrix[0][0] = -2;
+            convMatrix.Matrix[1][1] = 2;
+            convMatrix.Factor = 1;
+            convMatrix.Offset = 95;
+            return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
+    }
 
     String Select_Image(){
         return "PATH/";
     }
+
 }
+
+
