@@ -1,5 +1,6 @@
 package wild.tanvasthing;
 
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by GbearTheGenius on 11/19/16.
@@ -17,8 +19,10 @@ import java.net.Socket;
 public class Serverhelp {
     private String host;
     private int port;
+    private ArrayList<String> tags;
+    Bitmap bitmap;
 
-    Serverhelp(int port, String host) {
+    Serverhelp(int port, String host, Bitmap bitmap) {
         this.port = port;
         this.host = host;
     }

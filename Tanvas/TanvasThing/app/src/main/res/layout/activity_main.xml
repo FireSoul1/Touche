@@ -12,11 +12,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Hello World!"
+        android:id="@+id/vieww"/>
     <ImageView
         android:id="@+id/view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="1000px"
         android:src="@drawable/overlay"
         android:layout_centerHorizontal="true" />
 
@@ -26,5 +27,14 @@
         android:text="Upload Image"
         android:id="@+id/buttonUp"
         android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload a Texture"
+        android:id="@+id/buttonT"
+        android:layout_below="@+id/buttonUp"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
