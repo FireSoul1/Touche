@@ -1,4 +1,4 @@
-# Wildhacks Hack: Feelin' Clearly Now
+# Wildhacks Hack: Touche
 Reppin' Purdue! Choo Choo! BTFU
 
 ![logo](http://blog.structurestudios.com/hubfs/00_images_ss2015/academic/icon-purdue.jpg?t=1470436930809)
@@ -29,6 +29,6 @@ Many different concepts were brought together in our final product. Developing e
 
 It takes a will before you get the feel of things down. It was touch-and-go for a while, we only had one experienced Java programmer, and had limited knowledge of Image Processing. We had A LOT of trouble deciding what to do, and the design decisions were very hastily made and re-made over and over again. The team also really made strides to learn Java and Image Processing, to the point it was mind blowing! Shout-out to our intern for join us at the last minute and always looking to help!! 
 
-## What's next for Feelin' Clearly Now
+## What's next for Touche
 
 Tanvas and Clarifiai each present many different ways to build from their platform. Building this implementation further could involve further development of the image-segmenting process involving more experimentation to see what sorts of input might allow us to most effectively identify objects and thus apply textures.
