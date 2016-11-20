@@ -52,9 +52,9 @@ public class Serverhelp {
 
         tags = new ArrayList<>();
 
-        String ace = "yXPgoui487CyLJGUAaCIm3bcps3nuw";
-        clientID = "oZlOBWReqGuggCv6UXgSEQUTapq2btRYx8yZWt0A";
-        secret = "OLFv_3NhpUXuf2eOIEGiiL7fnTvJ-VF2_K8gg1MB";
+        String ace = "";
+        clientID = "";
+        secret = "";
 
         //intialize the client
         final ClarifaiClient client = new ClarifaiBuilder(clientID, secret)
