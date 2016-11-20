@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         Button new1 = (Button)findViewById(R.id.buttonUp);
         Button sec = (Button) findViewById(R.id.buttonT);
         final Context con = this;
-        pDialog = new SweetAlertDialog(con, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
 
         new1.setOnClickListener(new Button.OnClickListener() {
@@ -152,18 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-
                 Log.d("This: ", "Returned to the thing");
-//                progressDialog  = new ProgressDialog(con);
-//                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
-//                progressDialog.setProgress(0);
-//                progressDialog.show();
-                SweetAlertDialog pDialog = new SweetAlertDialog(con, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Loading");
-                pDialog.setCancelable(false);
-                pDialog.show();
+
 
                 try {
                     if ( mHapticView != null)
@@ -184,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
-                progressDialog  = new ProgressDialog(con);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
-                progressDialog.setProgress(0);
-                progressDialog.show();
+//                progressDialog  = new ProgressDialog(con);
+//                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
+//                progressDialog.setProgress(0);
+//                progressDialog.show();
                 try {
                     mHapticView.deactivate();
                 } catch (HapticServiceAdapterException e) {
@@ -311,11 +301,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
-
-
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
-
 
             //load completely new image and texture
             MainActivity.data = data;
@@ -344,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                     fin = Serverhelp.applyFilter(bitmap);
                 changeTexture(fin);
                 updates(targetUri, p);
-                //progressDialog.dismiss();
+
                 try {
                     if (mHapticView != null)
                         mHapticView.activate();
@@ -375,6 +361,7 @@ public class MainActivity extends AppCompatActivity {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 changeTexture(bitmap);
                 updates(targetUri, bitmap);
+                progressDialog.dismiss();
 
                 try {
                     if (mHapticView != null)
@@ -389,7 +376,10 @@ public class MainActivity extends AppCompatActivity {
             }
             updates(targetUri);
         }
-        pDialog.dismiss();
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("We are done! :D")
+                .setConfirmText("Thanks!")
+                .show();
         //progressDialog.dismiss();
 
 
@@ -424,6 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
     }
     public void updates(Uri i) {
         textTargetUri.setText(i.toString());
@@ -452,11 +443,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Integer... params) {
             //send in a server request
+
             Log.d("Path", data.getData().toString());
             String path =  RealPathUtil.getImagePath(con, data.getData());
-            //String path = String.valueOf(data.getData());
-            //File sdcard = Environment.getExternalStorageDirectory();
-          //  path = sdcard.getPath()+path.substring(path.indexOf("/document/"));
 
             Log.d("Path", path);
             if( !path.equals("/")) {
@@ -469,11 +458,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+//            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//            pDialog.setTitleText("Patience");
+//            pDialog.setCancelable(true);
+//            pDialog.show();
 
         }
         @Override
         protected void onProgressUpdate(Integer... values) {
-
+            //pDialog.dismiss();
         }
     }
     class YouTask extends AsyncTask<Integer, Integer, Integer> {
@@ -501,8 +494,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-
+//            pDialog = new SweetAlertDialog(con, SweetAlertDialog.PROGRESS_TYPE);
+//            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//            pDialog.setTitleText("Patience");
+//            pDialog.setCancelable(true);
+//            pDialog.show();
         }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+//            pDialog.
+//            pDialog.dismiss();
+        }
+
         @Override
         protected void onProgressUpdate(Integer... values) {
 

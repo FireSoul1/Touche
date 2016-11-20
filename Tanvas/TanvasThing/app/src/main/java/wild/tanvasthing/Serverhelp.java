@@ -163,7 +163,8 @@ public class Serverhelp {
                    }
                }
             }
-            ret = im.bitmap_special_crop(fin, is, gray, 0.5f);
+            if(gray != null && fin != null && is != null)
+                ret = im.bitmap_special_crop(fin, is, gray, 0.5f);
         }
         if(fin == null)
             fin = u;
