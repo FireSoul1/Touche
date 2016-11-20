@@ -15,7 +15,11 @@ We wanted to know if it was possible to carry out image-processing flexibly from
 
 ## How we built it
 
-We used Image-Segmenting algorithms to pre-process images with the help of data from [Clarifai](https://clarifai.com/) and their Android Client. We didn't make a server, which cost us runtime, but it did make it easier to organize tasks and was easier for the Java newbies to pick things up. 
+We used a combination of Image-Segmenting algorithms to pre-process images with the help of data from [Clarifai](https://clarifai.com/) and their Android Client. We didn't make a server, which cost us runtime, but it did make it easier to organize tasks and was easier for the Java newbies to pick things up. 
+
+## Theory and Application
+
+The application works by applying image processing algorithms to an image file, namely any taken from the internet or gallery, and using the output of the algorithms as a base for the haptic resource overlay. The application first uses Clarifai to analyze the image for material tags such as, wood, brick, glass, etc, as well as identify color densities. Then, a color segmentation algorithm crops the image for the most common color densities. Theoretically, these cropped images will correspond to materials present in the image. These cropped images are re-sent to Clarifai to identify which color density corresponds to which material tag. Once the material images are identified, a specific material filter is applied to the region in which the material is identified for the purpose of a haptic overlay. Once all materials have had a texture filter applied to the haptic overlay for that region, the haptic overlays are cropped to one image with a generic grayscale version of the original image as a background layer to fill white space. The resulting image is a generally applied material overlay to color segmented regions. 
 
 ## Challenges we ran into
 
