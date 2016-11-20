@@ -11,16 +11,37 @@ import android.util.Log;
 
 public class RealPathUtil {
 
+    public static String getImagePath(Context con,Uri uri){
+        Cursor cursor = con.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = con.getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        int u = cursor.getCount();
+        if(u == 0)
+            return  getRealPathFromURI_API19(con, uri);
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri){
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
-        Log.d("PathID", wholeID);
-        if(wholeID.split(":").length ==1)
-            return "1";
 
         // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
+        String[] y = wholeID.split(":");
+        String id = "";
+        if (y.length <= 1){
+            y = wholeID.split(";");
+            //id = wholeID;
+        }
 
         String[] column = { MediaStore.Images.Media.DATA };
 
@@ -36,6 +57,8 @@ public class RealPathUtil {
             filePath = cursor.getString(columnIndex);
         }
         cursor.close();
+        Log.d("PathID", filePath);
+
         return filePath;
     }
 

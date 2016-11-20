@@ -1,4 +1,4 @@
 #!/bin/bash
 adb root
 adb tcpip 5555
-adb connect 10.105.131.126
+adb connect 10.105.167.38

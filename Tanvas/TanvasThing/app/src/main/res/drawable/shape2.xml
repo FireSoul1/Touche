@@ -1,0 +1,21 @@
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+
+    <gradient
+        android:type="radial"
+        android:centerX="50%"
+        android:centerY="50%"
+        android:startColor="#FFFF5EBC"
+        android:centerColor="#FFFFDA5e"
+        android:endColor="#FFFFDA5E"
+        android:gradientRadius="400"/>
+    <corners
+        android:radius="900dp" />
+    <rotate
+        android:fromDegrees="45"
+        android:toDegrees="180"
+        android:pivotX="100%"
+        android:pivotY="50%">
+    </rotate>
+    <stroke android:width="5px" android:color="#000000" />
+</shape>

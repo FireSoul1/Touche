@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 
 import co.tanvas.haptics.service.app.*;
 import co.tanvas.haptics.service.adapter.*;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         textTargetUri = (TextView)findViewById(R.id.vieww);
         targetImage = (ImageView) findViewById(R.id.imageView1);
+        targetImage.setAlpha(0.89f);
 
         //long mil = SystemClock.currentThreadTimeMillis();
         Bitmap temp = BitmapFactory.decodeResource(getResources(), R.drawable.overlay);
@@ -145,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.setProgress(0);
                 progressDialog.show();
                 try {
-                    mHapticView.deactivate();
+                    if ( mHapticView != null)
+                        mHapticView.deactivate();
                 } catch (HapticServiceAdapterException e) {
                     e.printStackTrace();
                 }
@@ -283,22 +287,24 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        //load completely new image and texture
-        MainActivity.data = data;
-
-        MyTask task = new MyTask(this);
-        task.execute(1,2);
-
-        Uri targetUri = data.getData();
-        Bitmap bitmap = null;
-        Bitmap p = null;
-
 
 
 
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
 
+
+            //load completely new image and texture
+            MainActivity.data = data;
+            Uri targetUri = data.getData();
+            Bitmap bitmap = null;
+            Bitmap p = null;
+
             try {
+                MyTask task = new MyTask(this);
+                task.execute(1,2);
+                YouTask ts = new YouTask(this);
+                ts.execute(1,2);
+
 
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 //get the gray scale;
@@ -309,23 +315,49 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //TODO Apply Filters
-                fin = Serverhelp.applyFilter(bitmap);
-                //targetImage.setImageBitmap(fin);
+                ts.get();
+                if(Serverhelp.densities != null && Serverhelp.tags != null)
+                    fin = Serverhelp.applyFilter(bitmap);
                 changeTexture(fin);
-
-
-
+                updates(targetUri, p);
+                progressDialog.dismiss();
+                try {
+                    if (mHapticView != null)
+                        mHapticView.activate();
+                } catch (HapticServiceAdapterException e) {
+                    e.printStackTrace();
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }
         // This will only change the texture of the image
         else if (requestCode == 1 && resultCode == RESULT_OK) {
 
+
+            //load completely new image and texture
+            MainActivity.data = data;
+            Uri targetUri = data.getData();
+            Bitmap bitmap = null;
+            Bitmap p = null;
+
             try {
+
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 changeTexture(bitmap);
+                updates(targetUri, bitmap);
+
+                try {
+                    if (mHapticView != null)
+                        mHapticView.activate();
+                } catch (HapticServiceAdapterException e) {
+                    e.printStackTrace();
+                }
 
             } catch (FileNotFoundException e) {
 
@@ -333,13 +365,9 @@ public class MainActivity extends AppCompatActivity {
             }
             updates(targetUri);
         }
-        updates(targetUri, p);
         progressDialog.dismiss();
-        try {
-            mHapticView.activate();
-        } catch (HapticServiceAdapterException e) {
-            e.printStackTrace();
-        }
+
+
     }
 
     public void createNewFile(Bitmap map, int num, String type) {
@@ -366,8 +394,10 @@ public class MainActivity extends AppCompatActivity {
     * */
     public void updates(Uri i, Bitmap image) {
         textTargetUri.setText(i.toString());
-        if(image != null)
+        if(image != null) {
             targetImage.setImageBitmap(image);
+
+        }
 
     }
     public void updates(Uri i) {
@@ -397,13 +427,48 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Integer... params) {
             //send in a server request
-            String path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
-            while(path.equals("1")) {
-                path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
-                Log.d("TASK", "Looppinggg");
-            }
+            Log.d("Path", data.getData().toString());
+            String path =  RealPathUtil.getImagePath(con, data.getData());
+            //String path = String.valueOf(data.getData());
+            //File sdcard = Environment.getExternalStorageDirectory();
+          //  path = sdcard.getPath()+path.substring(path.indexOf("/document/"));
+
             Log.d("Path", path);
-            Serverhelp.getTags(path);
+            if( !path.equals("/")) {
+                Serverhelp.getTags(path);
+                Serverhelp.getDensity(path);
+            }
+            Log.d("TASK", "Ended");
+            return 1;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+
+        }
+    }
+    class YouTask extends AsyncTask<Integer, Integer, Integer> {
+
+        Context con;
+        Bitmap bit1, bit2;
+        Uri uri1;
+        YouTask(Context context) {
+            super();
+            this.con = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            //send in a server request
+            Log.d("Path", data.getData().toString());
+            String path =  RealPathUtil.getImagePath(con, data.getData());
+
+            Log.d("Path", path);
+            //Serverhelp.getTags(path);
             Serverhelp.getDensity(path);
             Log.d("TASK", "Ended");
             return 1;

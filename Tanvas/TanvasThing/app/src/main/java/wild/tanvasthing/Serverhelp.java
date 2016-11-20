@@ -48,6 +48,8 @@ public class Serverhelp {
     //send request to Clarifai
     public static void getTags(String path) {
 
+        Log.d("Path", path);
+
         tags = new ArrayList<>();
 
         String ace = "yXPgoui487CyLJGUAaCIm3bcps3nuw";
@@ -102,7 +104,7 @@ public class Serverhelp {
                         .executeSync()
                         .get();
         String out = rep.toString();
-        Log.d("ServerHelper", out);
+  //      Log.d("ServerHelper", out);
         String err = "";
         int y =0;
         //densities
@@ -112,7 +114,7 @@ public class Serverhelp {
             if(y > 1 && y % 2 == 1) {
                // Log.d("ServerHelper", gr +" ");
                 String end = t[1].substring(t[1].indexOf("value=")+6);
-                err = err + end.replaceAll("\\}", "0").replaceAll("\\]", "0") + " ";
+                err = err + end.replaceAll("\\}", "0").replaceAll("\\]", "0") + " "+curr+" ";
                 densities.put(curr, end);
             }
             //colors
@@ -128,29 +130,43 @@ public class Serverhelp {
     public static Bitmap applyFilter(Bitmap u) {
 
         ImageHelper im = new ImageHelper();
-        Bitmap is = im.Image_Segmentation(u,(float)((43*Math.PI)/180), (float)0.55);
-        Bitmap gray = im.Grayscale(u);
-        Bitmap fin = null;
 
-        for(int y = 0; y < ImageHelper.tags.length; y++) {
-            if(tags.contains(ImageHelper.tags[y])) {
-                switch (ImageHelper.tags[y]) {
-                    case "wood": fin = im.NoiseFilter(u); break;
-                    case "metal": fin = im.Gaussian_Blur(u,100); break;
-                    case "water": fin = im.Gaussian_Blur(u,3);break;
-                    case "brick": fin = im.createContrast(u, 56);break;
-                    case "cloth": fin = im.Gaussian_Blur(u, 2);break;
-                }
+        Bitmap fin, is, gray;
+        fin = is = gray = null;
+        Bitmap ret = u;
+        for(String hex: densities.keySet()) {
+
+            float[] out = im.HexToHue(hex);
+            float nes = Float.parseFloat(densities.get(hex).replaceAll("\\}","0").replaceAll("\\]","0"));
+
+            is = im.Image_Segmentation(u, out[0], nes);
+            gray = im.Grayscale(u);
+
+            for (int y = 0; y < ImageHelper.tags.length; y++) {
+               if (tags.contains(ImageHelper.tags[y])) {
+                   switch (ImageHelper.tags[y]) {
+                       case "wood":
+                           fin = im.NoiseFilter(u);
+                           break;
+                       case "metal":
+                           fin = im.Gaussian_Blur(u, 100);
+                           break;
+                       case "water":
+                           fin = im.Gaussian_Blur(u, 10);
+                           break;
+                       case "brick":
+                           fin = im.createContrast(u, 56);
+                           break;
+                       case "cloth":
+                           fin = im.Gaussian_Blur(u, 2);
+                           break;
+                   }
+               }
             }
+            ret = im.bitmap_special_crop(fin, is, gray, 0.5f);
         }
         if(fin == null)
             fin = u;
-        Bitmap ret = im.bitmap_special_crop(fin, is, gray, 0.3f);
-        //reduce, reuse....
-        //is.recycle();
-        //u.recycle();
-        //gray.recycle();
-       // fin.recycle();
 
         return ret;
     }

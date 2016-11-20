@@ -7,22 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/genric"
     tools:context="wild.tanvasthing.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         android:id="@+id/vieww"/>
 
-    <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/imageView1"
-    android:src="@drawable/overlay"
-        android:layout_below="@+id/vieww"
-        android:layout_alignParentStart="true"
-        android:layout_centerInParent="true"/>
     <!--<ImageView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="500px"-->
@@ -38,17 +30,36 @@
         android:id="@+id/buttonUp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/buttonT" />
+        android:layout_alignTop="@+id/buttonT"
+        android:background="@drawable/shape2"
+        android:paddingLeft="10dip"
+        android:textSize="35dp"
+        android:paddingRight="10dip" />
 
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload a Texture"
+        android:text="Upload Texture"
         android:id="@+id/buttonT"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/shape"
+        android:textSize="35dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+
+
+        <ImageView
+            android:layout_width="800dip"
+            android:layout_height="800dip"
+            android:id="@+id/imageView1"
+            android:src="@drawable/overlay"
+            android:background="@drawable/shadow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
