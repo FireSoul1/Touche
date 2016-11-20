@@ -15,7 +15,7 @@ We wanted to know if it was possible to carry out image-processing flexibly from
 
 ## How we built it
 
-We used a combination of Image-Segmenting algorithms to pre-process images with the help of data from [Clarifai](https://clarifai.com/) and their Android Client. We didn't make a server, which cost us runtime, but it did make it easier to organize tasks and was easier for the Java newbies to pick things up. 
+We used a combination of Image-Processing algorithms, such as filters, segmentations, and cropping, to process images with the help of data from [Clarifai](https://clarifai.com/) and their Android Client. We didn't make a server, which cost us runtime, but it did make it easier to organize tasks and was much easier to learn.
 
 ## Theory and Application
 
@@ -31,7 +31,7 @@ Many different concepts were brought together in our final product. Developing e
 
 ## What we learned
 
-It takes a will before you get the feel of things down. It was touch-and-go for a while, we only had one experienced Java programmer, and had limited knowledge of Image Processing. We had A LOT of trouble deciding what to do, and the design decisions were very hastily made and re-made over and over again. The team also really made strides to learn Java and Image Processing, to the point it was mind blowing! Shout-out to our intern for join us at the last minute and always looking to help!! 
+It takes a will before you get the feel of things down. It was touch-and-go for a while, we only had one experienced Java programmer, and had limited knowledge of Image Processing. We had some trouble deciding what to do, and the design decisions were very hastily made and re-made over and over again. The team also really made strides to learn Java and Advanced Image Processing, to the point it was mind blowing! Shout-out to our intern for join us at the last minute and always looking to help!! 
 
 ## What's next for Touche
 
