@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import co.tanvas.haptics.service.app.*;
 import co.tanvas.haptics.service.adapter.*;
 import co.tanvas.haptics.service.err.HapticServiceAdapterException;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private HapticMaterial mHapticMaterial1;
     private HapticSprite mHapticSprite1;
 
+
+    SweetAlertDialog pDialog;
     TextView textTargetUri;
     ImageView targetImage;
     ListView lv;
@@ -139,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
         Button new1 = (Button)findViewById(R.id.buttonUp);
         Button sec = (Button) findViewById(R.id.buttonT);
         final Context con = this;
+        pDialog = new SweetAlertDialog(con, SweetAlertDialog.PROGRESS_TYPE);
+
 
         new1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View arg0) {
@@ -148,11 +154,17 @@ public class MainActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
                 Log.d("This: ", "Returned to the thing");
-                progressDialog  = new ProgressDialog(con);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
-                progressDialog.setProgress(0);
-                progressDialog.show();
+//                progressDialog  = new ProgressDialog(con);
+//                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
+//                progressDialog.setProgress(0);
+//                progressDialog.show();
+                SweetAlertDialog pDialog = new SweetAlertDialog(con, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Loading");
+                pDialog.setCancelable(false);
+                pDialog.show();
+
                 try {
                     if ( mHapticView != null)
                         mHapticView.deactivate();
@@ -332,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                     fin = Serverhelp.applyFilter(bitmap);
                 changeTexture(fin);
                 updates(targetUri, p);
-                progressDialog.dismiss();
+                //progressDialog.dismiss();
                 try {
                     if (mHapticView != null)
                         mHapticView.activate();
@@ -377,7 +389,8 @@ public class MainActivity extends AppCompatActivity {
             }
             updates(targetUri);
         }
-        progressDialog.dismiss();
+        pDialog.dismiss();
+        //progressDialog.dismiss();
 
 
     }
