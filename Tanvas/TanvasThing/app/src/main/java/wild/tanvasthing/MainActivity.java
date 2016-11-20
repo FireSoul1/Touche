@@ -306,7 +306,14 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap fin = im.Grayscale(bitmap);
                 //apply the new texture
                 updates(targetUri, bitmap);
+
+
+                //TODO Apply Filters
+                fin = Serverhelp.applyFilter(bitmap);
+                //targetImage.setImageBitmap(fin);
                 changeTexture(fin);
+
+
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -393,9 +400,11 @@ public class MainActivity extends AppCompatActivity {
             String path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
             while(path.equals("1")) {
                 path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
+                Log.d("TASK", "Looppinggg");
             }
             Log.d("Path", path);
             Serverhelp.getTags(path);
+            Serverhelp.getDensity(path);
             Log.d("TASK", "Ended");
             return 1;
         }
