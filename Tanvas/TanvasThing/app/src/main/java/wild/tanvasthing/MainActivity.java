@@ -20,8 +20,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textTargetUri;
     ImageView targetImage;
+    ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         ImageHelper imm = new ImageHelper();
         targetImage.setImageBitmap(temp);
         progressDialog.dismiss();
+        lv = (ListView) findViewById(R.id.listView);
+
+
         //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
 
         //mil = SystemClock.currentThreadTimeMillis();
@@ -252,6 +258,12 @@ public class MainActivity extends AppCompatActivity {
             mHapticSprite = HapticSprite.create(serviceAdapter);
             mHapticSprite.setMaterial(mHapticMaterial);
             mHapticView.addSprite(mHapticSprite);
+
+
+            if(Serverhelp.tags != null) {
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Serverhelp.tags);
+                lv.setAdapter(arrayAdapter);
+            }
 
         } catch (HapticServiceAdapterException e) {
             Log.d("Loggin errors: ", e.toString());
