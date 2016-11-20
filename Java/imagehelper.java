@@ -22,7 +22,7 @@ public class imagehelper {
             "cloth"         //high resolution week noise
     };
 
-    public static final int COLOR_MAX = 0x0A;
+    public static final int COLOR_MAX = 0xFF;
 
     void imagehelper(){
 
@@ -188,7 +188,6 @@ public class imagehelper {
     /*
     Grainy Noise filter
      */
-
     public static Bitmap createContrast(Bitmap src, double value) {
 
         int width = src.getWidth();
@@ -259,6 +258,35 @@ public class imagehelper {
         Bitmap bmOut = Bitmap.createBitmap(width, height, source.getConfig());
         bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
         return bmOut;
+    }
+    /*public int[] Critical_Colors(Bitmap src,int tag_count){
+        int x,y,i;
+        float[] hsv = new float[3];
+        int[] colors = new int[90];
+        int count = 0;
+
+        int max_color = 0;
+        int[] returncolors = new int[tag_count];
+        for(x = 0; x < src.getWidth();x++){
+            for(y = 0; y < src.getHeight(); y++){
+                Color.colorToHSV(src.getPixel(x,y),hsv);
+                if(hsv[1] > 0.45 && hsv[2] > 0.4)
+                    colors[(int)Math.ceil(((double)hsv[0])/4.0)]++;
+            }
+        }
+
+        while(true){
+            for(i = 0; i < 90;i++){
+                if(colors[i] > colors[max_color])
+                    max_color = i;
+            }
+
+            returncolors[count] = colors[max_color];
+            count++;
+            max_color = 0;
+            if(count == tag_count)
+                break;
+        }
     }
     /*
     Miscellaneous functions for processes
