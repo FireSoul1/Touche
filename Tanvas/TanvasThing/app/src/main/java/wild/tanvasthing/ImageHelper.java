@@ -1,4 +1,5 @@
-package tanvas.purdue.tanvasproject;
+package wild.tanvasthing;
+
 /**
  * Created by Blake Wilson on 11/19/2016.
  */
@@ -8,7 +9,9 @@ import android.graphics.Color;
 
 import java.util.Random;
 
-public class imagehelper {
+import wild.tanvasthing.ConvolutionMatrix;
+
+public class ImageHelper {
 
     Bitmap final_image;
 
@@ -70,7 +73,7 @@ public class imagehelper {
                 g = b = r;
                 OutBitMap.setPixel(i,j,Color.argb(Color.alpha(pix), r, g, b));
             }
-    }
+        }
         return OutBitMap;
     }
     public Bitmap ConverttoPNG(String path)
@@ -80,13 +83,13 @@ public class imagehelper {
 
     public Bitmap Engrave_Image(Bitmap src){
 
-            ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
-            convMatrix.setAll(0);
-            convMatrix.Matrix[0][0] = -2;
-            convMatrix.Matrix[1][1] = 2;
-            convMatrix.Factor = 1;
-            convMatrix.Offset = 95;
-            return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+        convMatrix.setAll(0);
+        convMatrix.Matrix[0][0] = -2;
+        convMatrix.Matrix[1][1] = 2;
+        convMatrix.Factor = 1;
+        convMatrix.Offset = 95;
+        return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
     }
 
     String Select_Image(){
@@ -96,7 +99,7 @@ public class imagehelper {
     public Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
         Bitmap input = Bitmap.createBitmap(src);
         int x = 0,
-                    y = 0;
+                y = 0;
         int pix;
         int def_color = Color.argb(255,255,255,255);
         float[][] hsv = new float[input.getHeight()*input.getWidth()][3];
@@ -109,34 +112,34 @@ public class imagehelper {
             }
         }
 
-            float maxDist2 = 0.4f*0.4f;
+        float maxDist2 = 0.4f*0.4f;
 
-            // Adjust the relative importance of Hue and Saturation.
-            // Hue has a range of 0 to 2*PI and Saturation from 0 to 1.
-            float adjustUnits = (float)(Math.PI/2.0);
+        // Adjust the relative importance of Hue and Saturation.
+        // Hue has a range of 0 to 2*PI and Saturation from 0 to 1.
+        float adjustUnits = (float)(Math.PI/2.0);
 
-            // step through each pixel and mark how close it is to the selected color
-            Bitmap output = Bitmap.createBitmap(input);
+        // step through each pixel and mark how close it is to the selected color
+        Bitmap output = Bitmap.createBitmap(input);
 
 
-            for( y = 0; y < input.getHeight(); y++ ) {
-                for( x = 0; x < input.getWidth(); x++ ) {
+        for( y = 0; y < input.getHeight(); y++ ) {
+            for( x = 0; x < input.getWidth(); x++ ) {
 
-                    // Hue is an angle in radians, so simple subtraction doesn't work
-                    float new_hue = (float)(((hsv[input.getWidth() * y + x][0] * (Math.PI) / 180.0F)));
-                    float dh = (float)dist(new_hue,hue);
-                    float ds = (hsv[input.getWidth() * y + x][1]-saturation)*adjustUnits;
+                // Hue is an angle in radians, so simple subtraction doesn't work
+                float new_hue = (float)(((hsv[input.getWidth() * y + x][0] * (Math.PI) / 180.0F)));
+                float dh = (float)dist(new_hue,hue);
+                float ds = (hsv[input.getWidth() * y + x][1]-saturation)*adjustUnits;
 
-                    // this distance measure is a bit naive, but good enough for to demonstrate the concept
-                    float dist2 = dh*dh + ds*ds;
-                    if( dist2 <= maxDist2 ) {
-                        output.setPixel(x,y,input.getPixel(x,y));
-                    }
+                // this distance measure is a bit naive, but good enough for to demonstrate the concept
+                float dist2 = dh*dh + ds*ds;
+                if( dist2 <= maxDist2 ) {
+                    output.setPixel(x,y,input.getPixel(x,y));
                 }
             }
-            return output;
-
         }
+        return output;
+
+    }
 
     public Bitmap final_texture(Bitmap[] haptic_bitmaps){
         int max_color = Color.argb(255,255,255,255);
@@ -162,7 +165,7 @@ public class imagehelper {
             for(y = 0; y < region_bitmap.getHeight(); y++){
                 if(region_bitmap.getPixel(x,y) < max_color)
                     pixel_value = (int)Math.ceil((double)back_end.getPixel(x,y) * back_end_priority) + (int)Math.ceil((1-back_end_priority)*(double)effect_bitmap.getPixel(x,y));
-                    output.setPixel(x,y,pixel_value);
+                output.setPixel(x,y,pixel_value);
             }
         }
         return output;
@@ -264,7 +267,6 @@ public class imagehelper {
         float[] hsv = new float[3];
         int[] colors = new int[90];
         int count = 0;
-
         int max_color = 0;
         int[] returncolors = new int[tag_count];
         for(x = 0; x < src.getWidth();x++){
@@ -274,13 +276,11 @@ public class imagehelper {
                     colors[(int)Math.ceil(((double)hsv[0])/4.0)]++;
             }
         }
-
         while(true){
             for(i = 0; i < 90;i++){
                 if(colors[i] > colors[max_color])
                     max_color = i;
             }
-
             returncolors[count] = colors[max_color];
             count++;
             max_color = 0;
@@ -306,8 +306,4 @@ public class imagehelper {
         return Math.abs(minus(angA,angB));
     }
 
-    }
-
-
-
-
+}

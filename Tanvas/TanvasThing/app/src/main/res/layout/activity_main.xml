@@ -17,8 +17,44 @@
     <ImageView
         android:id="@+id/view"
         android:layout_width="wrap_content"
-        android:layout_height="1000px"
+        android:layout_height="300px"
         android:src="@drawable/overlay"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="300px"
+    android:id="@+id/imageView1"
+    android:src="@drawable/overlay"
+    android:layout_below="@+id/view"
+    android:layout_centerHorizontal="true" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="300px"
+        android:id="@+id/imageView2"
+        android:src="@drawable/overlay"
+        android:layout_below="@+id/imageView1"
+        android:layout_alignStart="@+id/imageView1" />
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="500px"-->
+        <!--android:id="@+id/imageView3"-->
+        <!--android:src="@drawable/overlay"-->
+        <!--android:layout_below="@+id/imageView4"-->
+        <!--android:layout_alignParentStart="true" />-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="300px"
+        android:id="@+id/imageView4"
+        android:src="@drawable/overlay"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignStart="@+id/imageView5" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="300px"
+        android:id="@+id/imageView5"
+        android:src="@drawable/overlay"
+        android:layout_below="@+id/imageView4"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -26,8 +62,10 @@
         android:layout_height="wrap_content"
         android:text="Upload Image"
         android:id="@+id/buttonUp"
-        android:layout_below="@+id/view"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/buttonT" />
+
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -35,6 +73,8 @@
         android:layout_height="wrap_content"
         android:text="Upload a Texture"
         android:id="@+id/buttonT"
-        android:layout_below="@+id/buttonUp"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>

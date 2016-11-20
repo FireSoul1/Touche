@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -61,22 +62,56 @@ public class MainActivity extends AppCompatActivity {
         textTargetUri = (TextView)findViewById(R.id.vieww);
         targetImage = (ImageView) findViewById(R.id.view);
 
-        long mil = SystemClock.currentThreadTimeMillis();
-        Bitmap temp = BitmapFactory.decodeResource(getResources(),
-                R.drawable.overlay);
+        //long mil = SystemClock.currentThreadTimeMillis();
+        Bitmap temp = BitmapFactory.decodeResource(getResources(), R.drawable.overlay);
         ImageHelper imm = new ImageHelper();
-     //   Bitmap temp1 = imm.Engrave_Image(temp);
-       // targetImage.setImageBitmap(temp1);
-        Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
-
-        mil = SystemClock.currentThreadTimeMillis();
-        temp = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
         targetImage.setImageBitmap(temp);
-        Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+        //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+
+        //mil = SystemClock.currentThreadTimeMillis();
+        targetImage = (ImageView) findViewById(R.id.imageView1);
+        Bitmap temp1 = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
+        targetImage.setImageBitmap(temp1);
+        //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
+
+        targetImage = (ImageView) findViewById(R.id.imageView2);
+        Bitmap temp2 = imm.Gaussian_Blur(temp, 80);
+        targetImage.setImageBitmap(temp2);
+
+        targetImage = (ImageView) findViewById(R.id.imageView4);
+        Bitmap temp3 = imm.Grayscale(temp);
+        targetImage.setImageBitmap(temp3);
+
+  //      targetImage = (ImageView) findViewById(R.id.imageView5);
+//        Bitmap temp5 = imm.NoiseFilter(temp);
+//        targetImage.setImageBitmap(temp5);
+
+
+
 
         //create new files
-        Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.chair1);
-
+//        Bitmap ty;
+//        ImageHelper im = new ImageHelper();
+//        for(int u = 0; u < 3; u++) {
+//
+//            int id = this.getResources().getIdentifier("chair" + (u+1),"drawable", this.getPackageName());
+//            ty = BitmapFactory.decodeResource(getResources(), id);
+//            createNewFile(ty, u, "stand");
+//            //run Grayscale
+//            Bitmap t1 = im.Grayscale(ty);
+//            createNewFile(t1, u, "gray");
+//            //run Segmentation
+//            Bitmap t2 = im.Image_Segmentation(ty, (float)((43*Math.PI)/180), (float)0.55 );
+//            createNewFile(t2, u, "seg");
+//            //run Blur
+//            Bitmap t3 = im.Gaussian_Blur(ty,16);
+//            createNewFile(t3, u, "blur");
+//            //run Noise
+//            Bitmap t4 = im.NoiseFilter(ty);
+//            createNewFile(t4, u, "noise");
+//
+//        }
+//
 
 
 

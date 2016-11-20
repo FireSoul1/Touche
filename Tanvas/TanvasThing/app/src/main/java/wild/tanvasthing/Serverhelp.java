@@ -26,6 +26,14 @@ public class Serverhelp {
         this.port = port;
         this.host = host;
     }
+    //send request to Clarifai
+    public static void getTags(String path) {
+        String ace = "xuV5th9IM7sLCD8TpX8q1CeL91XgsJ";
+
+
+
+    }
+
     public int uploadImage(String path) {
 
         Socket sock = new Socket();
