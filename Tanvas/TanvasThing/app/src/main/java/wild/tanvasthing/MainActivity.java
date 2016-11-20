@@ -1,5 +1,6 @@
 package wild.tanvasthing;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
@@ -58,33 +60,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressDialog  = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage(" \"Patience is a virtue\" ~some wise guy/girl");
+        progressDialog.setProgress(0);
+        progressDialog.show();
 
         textTargetUri = (TextView)findViewById(R.id.vieww);
-        targetImage = (ImageView) findViewById(R.id.view);
+        targetImage = (ImageView) findViewById(R.id.imageView1);
 
         //long mil = SystemClock.currentThreadTimeMillis();
         Bitmap temp = BitmapFactory.decodeResource(getResources(), R.drawable.overlay);
         ImageHelper imm = new ImageHelper();
         targetImage.setImageBitmap(temp);
+        progressDialog.dismiss();
         //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
 
         //mil = SystemClock.currentThreadTimeMillis();
-        targetImage = (ImageView) findViewById(R.id.imageView1);
-        Bitmap temp1 = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
-        targetImage.setImageBitmap(temp1);
+        //targetImage = (ImageView) findViewById(R.id.imageView1);
+       // Bitmap temp1 = imm.Image_Segmentation(temp,(float)((43*Math.PI)/180), (float)0.55);
+        //targetImage.setImageBitmap(temp1);
         //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
 
-        targetImage = (ImageView) findViewById(R.id.imageView2);
-        Bitmap temp2 = imm.Gaussian_Blur(temp, 80);
-        targetImage.setImageBitmap(temp2);
-
-        targetImage = (ImageView) findViewById(R.id.imageView4);
-        Bitmap temp3 = imm.Grayscale(temp);
-        targetImage.setImageBitmap(temp3);
-
-  //      targetImage = (ImageView) findViewById(R.id.imageView5);
+//        targetImage = (ImageView) findViewById(R.id.imageView2);
+//        Bitmap temp2 = imm.Gaussian_Blur(temp, 16);
+//        targetImage.setImageBitmap(temp2);
+//
+//        targetImage = (ImageView) findViewById(R.id.imageView4);
+//        Bitmap temp3 = imm.Grayscale(temp);
+//        targetImage.setImageBitmap(temp3);
+//
+//        targetImage = (ImageView) findViewById(R.id.imageView5);
 //        Bitmap temp5 = imm.NoiseFilter(temp);
 //        targetImage.setImageBitmap(temp5);
+
+
 
 
 
@@ -112,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 //
-
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 999);
 
 
         //set up Button
@@ -253,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 // Set the size and position of the haptic sprite to correspond to the view we created
-                View view = findViewById(R.id.view);
+                View view = findViewById(R.id.imageView1);
                 int[] location = new int[2];
                 view.getLocationOnScreen(location);
                 mHapticSprite.setSize(view.getWidth(), view.getHeight());
@@ -263,12 +274,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(null, e.toString());
             }
         }
-    }
-
-    public void onClick(View arg0) {
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 0);
     }
 
 
@@ -281,12 +286,15 @@ public class MainActivity extends AppCompatActivity {
         //load completely new image and texture
         MainActivity.data = data;
 
-     //   MyTask task = new MyTask(this);
-   //     task.execute(1,2);
+        MyTask task = new MyTask(this);
+        task.execute(1,2);
 
         Uri targetUri = data.getData();
         Bitmap bitmap = null;
         Bitmap p = null;
+
+
+
 
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
 
@@ -298,7 +306,14 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap fin = im.Grayscale(bitmap);
                 //apply the new texture
                 updates(targetUri, bitmap);
+
+
+                //TODO Apply Filters
+                fin = Serverhelp.applyFilter(bitmap);
+                //targetImage.setImageBitmap(fin);
                 changeTexture(fin);
+
+
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -369,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MyTask extends AsyncTask<Integer, Integer, Bitmap> {
+    class MyTask extends AsyncTask<Integer, Integer, Integer> {
 
         Context con;
         Bitmap bit1, bit2;
@@ -380,51 +395,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Bitmap doInBackground(Integer... params) {
-            int requestCode = params[0];
-            int resultCode = params[1];
-            Bitmap bitmap = null;
-
-            //load completely new image and texture
-            if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
-                Uri targetUri = data.getData();
-                try {
-
-                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                    //get the gray scale;
-                    ImageHelper im  = new ImageHelper();
-
-                    //apply the new texture
-                    bit1 = bitmap;
-                    uri1 = targetUri;
-
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-
-                }
+        protected Integer doInBackground(Integer... params) {
+            //send in a server request
+            String path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
+            while(path.equals("1")) {
+                path =  RealPathUtil.getRealPathFromURI_API19(con, data.getData());
+                Log.d("TASK", "Looppinggg");
             }
-            // This will only change the texture of the image
-            else if (requestCode == 1 && resultCode == RESULT_OK) {
-                Uri targetUri = data.getData();
-                try {
-
-                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                    changeTexture(bitmap);
-
-                } catch (FileNotFoundException e) {
-
-                    e.printStackTrace();
-                }
-                updates(targetUri);
-            }
+            Log.d("Path", path);
+            Serverhelp.getTags(path);
+            Serverhelp.getDensity(path);
             Log.d("TASK", "Ended");
-            return bitmap;
+            return 1;
         }
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            return;
-        }
+
         @Override
         protected void onPreExecute() {
 

@@ -15,14 +15,14 @@ public class ImageHelper {
 
     Bitmap final_image;
 
-    String[] tags = new String[]{
+    static String[] tags = new String[]{
             "wood",         //Grainy noise
             "brick",        //high contrast
             "glass",        //strong blur
             "metal",        //smooth blur
             "water",        //weak blur
             "plastic",      //weak blur
-            "cloth"         //high resolution week noise
+            "cloth"         //high resolution weak noise
     };
 
     public static final int COLOR_MAX = 0xFF;
@@ -62,6 +62,8 @@ public class ImageHelper {
                 pix,
                 r,g,b;
         Bitmap OutBitMap = Bitmap.createBitmap(pre_image);
+        OutBitMap = OutBitMap.copy(Bitmap.Config.ARGB_8888, true);
+
 
         for (i = 0; i < width;i++){
             for(j = 0; j < height;j++){
@@ -98,17 +100,18 @@ public class ImageHelper {
 
     public Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
         Bitmap input = Bitmap.createBitmap(src);
+        Bitmap new1 = input.copy(Bitmap.Config.ARGB_8888, true);
         int x = 0,
                 y = 0;
         int pix;
         int def_color = Color.argb(255,255,255,255);
         float[][] hsv = new float[input.getHeight()*input.getWidth()][3];
 
-        for( x = 0; x < input.getWidth(); x++ ) {
-            for( y = 0; y < input.getHeight(); y++ ) {
-                pix = input.getPixel(x, y);
-                input.setPixel(x,y,def_color);
-                Color.colorToHSV(pix,hsv[input.getWidth()*y + x]);
+        for( x = 0; x < new1.getWidth(); x++ ) {
+            for( y = 0; y < new1.getHeight(); y++ ) {
+                pix = new1.getPixel(x, y);
+                new1.setPixel(x,y,def_color);
+                Color.colorToHSV(pix,hsv[new1.getWidth()*y + x]);
             }
         }
 
@@ -119,7 +122,7 @@ public class ImageHelper {
         float adjustUnits = (float)(Math.PI/2.0);
 
         // step through each pixel and mark how close it is to the selected color
-        Bitmap output = Bitmap.createBitmap(input);
+        Bitmap output = Bitmap.createBitmap(new1);
 
 
         for( y = 0; y < input.getHeight(); y++ ) {
@@ -156,7 +159,7 @@ public class ImageHelper {
         return out_haptic;
     }
 
-    public Bitmap bitmap_special_crop(Bitmap effect_bitmap,Bitmap region_bitmap,Bitmap back_end, float back_end_priority){
+    public Bitmap bitmap_special_crop(Bitmap effect_bitmap, Bitmap region_bitmap, Bitmap back_end, float back_end_priority){
         int x,y;
         int max_color = Color.argb(255,255,255,255);
         int pixel_value = 0;
