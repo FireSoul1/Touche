@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 changeTexture(bitmap);
-                updates(targetUri, bitmap);
+                updates(targetUri);
                 progressDialog.dismiss();
 
                 try {
