@@ -98,6 +98,13 @@ public class ImageHelper {
         return "PATH/";
     }
 
+    public float[] HexToHue(String hex){
+        int rgbcolor = Color.parseColor(hex);
+        float[] hsv = new float[3];
+        Color.colorToHSV(rgbcolor,hsv);
+        return hsv;
+    }
+
     public Bitmap Image_Segmentation(Bitmap src, float hue , float saturation ) {
         Bitmap input = Bitmap.createBitmap(src);
         Bitmap new1 = input.copy(Bitmap.Config.ARGB_8888, true);
