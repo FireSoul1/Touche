@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         ImageHelper imm = new ImageHelper();
         targetImage.setImageBitmap(temp);
         progressDialog.dismiss();
-        lv = (ListView) findViewById(R.id.listView);
+        lv = (ListView) findViewById(R.id.listView2);
 
 
         //Log.d("Time:: ", SystemClock.currentThreadTimeMillis() - mil +"");
