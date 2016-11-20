@@ -14,27 +14,15 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:id="@+id/vieww"/>
-    <ImageView
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="300px"
-        android:src="@drawable/overlay"
-        android:layout_centerHorizontal="true" />
 
     <ImageView
     android:layout_width="wrap_content"
-    android:layout_height="300px"
+    android:layout_height="800px"
     android:id="@+id/imageView1"
     android:src="@drawable/overlay"
-    android:layout_below="@+id/view"
-    android:layout_centerHorizontal="true" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="300px"
-        android:id="@+id/imageView2"
-        android:src="@drawable/overlay"
-        android:layout_below="@+id/imageView1"
-        android:layout_alignStart="@+id/imageView1" />
+        android:layout_below="@+id/vieww"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="159dp" />
     <!--<ImageView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="500px"-->
@@ -42,20 +30,6 @@
         <!--android:src="@drawable/overlay"-->
         <!--android:layout_below="@+id/imageView4"-->
         <!--android:layout_alignParentStart="true" />-->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="300px"
-        android:id="@+id/imageView4"
-        android:src="@drawable/overlay"
-        android:layout_below="@+id/imageView2"
-        android:layout_alignStart="@+id/imageView5" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="300px"
-        android:id="@+id/imageView5"
-        android:src="@drawable/overlay"
-        android:layout_below="@+id/imageView4"
-        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
